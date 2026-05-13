@@ -5,8 +5,11 @@
 package com.avaliacaoReinaldo.n2.controller;
 
 import com.avaliacaoReinaldo.n2.entity.Venda;
+import com.avaliacaoReinaldo.n2.enuns.StatusVenda;
 import com.avaliacaoReinaldo.n2.service.VendaService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,5 +64,12 @@ public class VendaController {
     @DeleteMapping("/{id}")
     public void deleteVenda(@PathVariable Long id) {
         vendaService.deleteVenda(id);
+    }
+    
+    @GetMapping("/status")
+    public List<String> listarStatus() {
+        return Arrays.stream(StatusVenda.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }

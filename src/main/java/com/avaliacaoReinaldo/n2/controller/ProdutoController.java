@@ -5,8 +5,12 @@
 package com.avaliacaoReinaldo.n2.controller;
 
 import com.avaliacaoReinaldo.n2.entity.Produto;
+import com.avaliacaoReinaldo.n2.enuns.CategoriaProduto;
+import com.avaliacaoReinaldo.n2.enuns.FormaPagamento;
 import com.avaliacaoReinaldo.n2.service.ProdutoService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/produtos")
 @CrossOrigin(origins = "*")
 public class ProdutoController {
-    
+
     private ProdutoService produtoService;
 
     public ProdutoController(ProdutoService produtoService) {
@@ -57,7 +61,7 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Produto> editarProduto(@PathVariable Long id, @RequestBody Produto produto) {
-        produto.setId(id); 
+        produto.setId(id);
         return ResponseEntity.ok(produtoService.editarProduto(produto));
     }
 
@@ -65,5 +69,18 @@ public class ProdutoController {
     public void deleteProduto(@PathVariable Long id) {
         produtoService.deleteProduto(id);
     }
-    
+
+    @GetMapping("/categorias")
+    public List<String> listarCategorias() {
+        return Arrays.stream(CategoriaProduto.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/formas-pagamento")
+    public List<String> listarFormasPagamento() {
+        return Arrays.stream(FormaPagamento.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
 }
